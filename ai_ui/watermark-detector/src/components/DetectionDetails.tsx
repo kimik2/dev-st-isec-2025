@@ -247,7 +247,15 @@ const DetectionDetails: React.FC<DetectionDetailsProps> = ({
                     <Info size={14} style={{ color: '#A5ACBA' }} />
                     <span className="info-label">워터마크 정보</span>
                     </div>
-                  <span className="info-value">{detectionResult.ext}</span>
+                  <span>
+                    {(() => {
+                    try {
+                      const parsed = JSON.parse(detectionResult.ext);
+                      return parsed.message || detectionResult.ext;
+                    } catch {
+                      return detectionResult.ext;
+                    }
+                  })()}</span>
                 </div>
               )}
                 {detectionResult.outFileName && (
