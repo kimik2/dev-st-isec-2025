@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -35,6 +36,11 @@ func LoadEnv() (string, string) {
 }
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	GIN_MODE, PORT := LoadEnv()
 	gin.SetMode(GIN_MODE)
 	r := gin.New()
@@ -56,6 +62,7 @@ func main() {
 	AI_SERVER_ADDRESS := os.Getenv("AI_SERVER")
 	LIB_MODULE := WM_MODULE_PATH + WM_AI_MODULE
 	log.Infof("Starting server on port %s with mode %s", PORT, GIN_MODE)
+	log.Infof("Starting AI server at %s", AI_SERVER_ADDRESS)
 
 	r.GET("/ai", func(c *gin.Context) {
 		// Get filename from query parameter
